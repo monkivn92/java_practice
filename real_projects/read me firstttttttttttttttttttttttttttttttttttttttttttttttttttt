@@ -1,0 +1,5 @@
+----------IPSCAN-----------------------------
+### import src/lib manually
+### project structure --> module ->> dependencies ->> move lib_linux64 to the top if it is running on Linux 64 , move lib_win64 to the top if it is running on windows 66bit ===> prevent Dagger errors.
+--------------------------------------------------
+
