@@ -1,0 +1,57 @@
+
+
+
+ ======================================================== 
+#process(...) in PublicFinalProcessor
+ ======================================================== 
+ annotations count = 1
+- e2 = ABC
+- e2 = MODULE_NAME
+- Error!!!
+
+
+
+ ======================================================== 
+#process(...) in PublicFinalProcessor
+ ======================================================== 
+ annotations count = 0
+
+
+
+ ======================================================== 
+#process(...) in ActionProcessor
+ ======================================================== 
+ ==> TypeElement ann = org.o7planning.ann.Action
+ ====> ann.getEnclosedElements() count = 0
+ ====> ann.getEnclosingElement() = package org.o7planning.ann
+ ====> ann.getKind() = ANNOTATION_TYPE
+ ====> env.getElementsAnnotatedWith(ann) count = 1
+ ========> ElementsAnnotatedWith: public java.lang.String login() 
+           - Kind : METHOD
+           - method : public java.lang.String login() 
+           -- method.getReturnType() : java.lang.String
+
+
+
+ ======================================================== 
+#process(...) in ControllerProcessor
+ ======================================================== 
+ ==> TypeElement ann = org.o7planning.ann.Controller
+ ====> ann.getEnclosedElements() count = 0
+ ====> ann.getEnclosingElement() = package org.o7planning.ann
+ ====> ann.getKind() = ANNOTATION_TYPE
+ ====> env.getElementsAnnotatedWith(ann) count = 1
+ ========> ElementsAnnotatedWith: org.o7planning.tutorial.apttest.TestActionController
+           - Kind : CLASS
+
+
+
+ ======================================================== 
+#process(...) in ActionProcessor
+ ======================================================== 
+
+
+
+ ======================================================== 
+#process(...) in ControllerProcessor
+ ======================================================== 

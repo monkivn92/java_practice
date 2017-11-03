@@ -1,0 +1,18 @@
+---------------------------------------------
+
+### Imported libs, import libs successfully in source code, but it takes no effect
+--> check .jar file for excute permission
+
+----------------------------------------------
+
+
+
+
+------------------------------------------------
+## IMPORT MAVEN DEPENDENCIES TO SOURCE CODE
+Don't go by .m2/reposities folder structure.
+Go by meven project structure instead.
+src/main/java/acbd.java ---> no needs import, use directly abcd.function();
+src/main/java/mproj/mod/jabc.java --> import mproj.mod.jabc;
+----------------------------------------------------
+

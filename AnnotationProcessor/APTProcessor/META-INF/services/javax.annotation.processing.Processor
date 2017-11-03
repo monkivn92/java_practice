@@ -1,0 +1,3 @@
+org.o7planning.aptprocessor.PublicFinalProcessor
+org.o7planning.aptprocessor.ActionProcessor
+org.o7planning.aptprocessor.ControllerProcessor
