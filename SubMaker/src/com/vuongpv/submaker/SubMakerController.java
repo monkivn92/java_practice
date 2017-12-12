@@ -1,9 +1,13 @@
 package com.vuongpv.submaker;
-import javafx.application.Application;
+
+import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
@@ -14,14 +18,15 @@ import javafx.stage.Stage;
 
 import javafx.event.ActionEvent;
 
-import java.io.BufferedReader;
+
 import java.io.File;
-import java.io.FileReader;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import javafx.util.Duration;
 import java.util.List;
 import javafx.concurrent.*;
 
@@ -49,17 +54,25 @@ public class SubMakerController
     private Button load_saved_file_btn;
 
     @FXML
+    private Button save_proj_btn;
+
+    @FXML
     private Button play_vid_btn;
 
     @FXML
-    private Button pause_vid_btn;
+    private Slider progress_bar_vid;
 
     @FXML
-    private Button save_proj_btn;
+    private Label time_line_vid;
 
     private Stage stage;
 
     private Service<Void> bgthread;
+    private MediaPlayer mp;
+
+    private boolean atEndOfMedia = false;
+    private Duration duration;
+    private boolean stopRequested = false;
 
     public void setStage(Stage stage)
     {
@@ -86,9 +99,10 @@ public class SubMakerController
         if(file != null)
         {
             Media m = new Media(file.toURI().toString());
-            MediaPlayer mp = new MediaPlayer(m);
+            mp = new MediaPlayer(m);
             mediaView.setMediaPlayer(mp);
             videoPane.getChildren().remove(pendingLabel);
+            setUpMediaController();
         }
 
     }
@@ -167,6 +181,176 @@ public class SubMakerController
         String txt = textEditor.getText().replace("svn", "SVN");
         textEditor.setText(txt);
     }
+
+    public void setUpMediaController()
+    {
+        play_vid_btn.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                MediaPlayer.Status status = mp.getStatus();
+
+                if (status == MediaPlayer.Status.UNKNOWN || status == MediaPlayer.Status.HALTED)
+                {
+                    // don't do anything in these states
+                    return;
+                }
+
+                if (status == MediaPlayer.Status.PAUSED || status == MediaPlayer.Status.READY  || status == MediaPlayer.Status.STOPPED)
+                {
+                    // rewind the movie if we're sitting at the end
+                    if (atEndOfMedia)
+                    {
+                        mp.seek(mp.getStartTime());
+                        atEndOfMedia = false;
+                    }
+                    mp.play();
+
+                }
+                else
+                {
+                    mp.pause();
+
+                }
+            }
+        });//play btn
+
+        mp.currentTimeProperty().addListener(new InvalidationListener() {
+            public void invalidated(Observable ov)
+            {
+                updateValues();
+            }
+        });
+
+        mp.setOnPlaying(new Runnable() {
+            public void run()
+            {
+                if (stopRequested)
+                {
+                    mp.pause();
+                    stopRequested = false;
+                }
+                else
+                {
+                    play_vid_btn.setText("||");
+                }
+            }
+        });
+
+        mp.setOnPaused(new Runnable() {
+            public void run()
+            {
+                System.out.println("onPaused");
+                play_vid_btn.setText(">");
+            }
+        });
+
+        mp.setOnReady(new Runnable() {
+            public void run()
+            {
+                duration = mp.getMedia().getDuration();
+                updateValues();
+            }
+        });
+
+        mp.setOnEndOfMedia(new Runnable() {
+            public void run()
+            {
+
+                play_vid_btn.setText(">");
+                stopRequested = true;
+                atEndOfMedia = true;
+
+            }
+        });
+
+
+        progress_bar_vid.valueProperty().addListener(new InvalidationListener() {
+            public void invalidated(Observable ov)
+            {
+                if (progress_bar_vid.isValueChanging())
+                {
+                    // multiply duration by percentage calculated by slider position
+                    mp.seek(duration.multiply(progress_bar_vid.getValue() / 100.0));
+                }
+            }
+        });
+
+
+    }
+
+    protected void updateValues()
+    {
+        if (time_line_vid != null && progress_bar_vid != null )
+        {
+            Platform.runLater(new Runnable() {
+                public void run()
+                {
+                    Duration currentTime = mp.getCurrentTime();
+
+                    time_line_vid.setText(formatTime(currentTime, duration));
+
+                    progress_bar_vid.setDisable(duration.isUnknown());
+
+                    if (!progress_bar_vid.isDisabled()  && duration.greaterThan(Duration.ZERO)
+                            && !progress_bar_vid.isValueChanging())
+                    {
+                        progress_bar_vid.setValue(currentTime.divide(duration).toMillis() * 100.0);
+                    }
+
+                }
+            });
+        }
+    }
+
+
+    private static String formatTime(Duration elapsed, Duration duration)
+    {
+        int intElapsed = (int) Math.floor(elapsed.toSeconds());
+        int elapsedHours = intElapsed / (60 * 60);
+
+        if (elapsedHours > 0)
+        {
+            intElapsed -= elapsedHours * 60 * 60;
+        }
+
+        int elapsedMinutes = intElapsed / 60;
+        int elapsedSeconds = intElapsed - elapsedHours * 60 * 60  - elapsedMinutes * 60;
+
+        if (duration.greaterThan(Duration.ZERO))
+        {
+            int intDuration = (int) Math.floor(duration.toSeconds());
+            int durationHours = intDuration / (60 * 60);
+            if (durationHours > 0)
+            {
+                intDuration -= durationHours * 60 * 60;
+            }
+            int durationMinutes = intDuration / 60;
+            int durationSeconds = intDuration - durationHours * 60 * 60  - durationMinutes * 60;
+            if (durationHours > 0)
+            {
+                return String.format("%d:%02d:%02d/%d:%02d:%02d",
+                        elapsedHours, elapsedMinutes, elapsedSeconds,
+                        durationHours, durationMinutes, durationSeconds);
+            }
+            else
+            {
+                return String.format("%02d:%02d/%02d:%02d", elapsedMinutes,
+                        elapsedSeconds, durationMinutes, durationSeconds);
+            }
+        }
+        else
+        {
+            if (elapsedHours > 0)
+            {
+                return String.format("%d:%02d:%02d", elapsedHours, elapsedMinutes, elapsedSeconds);
+            }
+            else
+            {
+                return String.format("%02d:%02d", elapsedMinutes, elapsedSeconds);
+            }
+        }
+    }
+
 
 
 }
