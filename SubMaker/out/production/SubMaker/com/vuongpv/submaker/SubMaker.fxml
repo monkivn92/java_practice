@@ -24,10 +24,10 @@
             </TextArea>
             <VBox prefHeight="580.0" prefWidth="642.0">
                <children>
-                  <Pane maxWidth="-Infinity" prefHeight="360.0" prefWidth="640.0" style="-fx-background-color: #013243;">
+                  <Pane maxWidth="-Infinity" fx:id="videoPane" prefHeight="360.0" prefWidth="640.0" style="-fx-background-color: #013243;">
                      <children>
                         <MediaView fx:id="mediaView" fitHeight="360.0" fitWidth="640.0" />
-                        <Label layoutX="94.0" layoutY="147.0" style="-fx-background-color: #c0c0c0;" text="Press Video Source Button to import video" textFill="WHITE">
+                        <Label layoutX="94.0" fx:id="pendingLabel" layoutY="147.0" style="-fx-background-color: #c0c0c0;" text="Press Video Source Button to import video" textFill="WHITE">
                            <font>
                               <Font size="24.0" />
                            </font>
@@ -51,7 +51,7 @@
                      </VBox.margin>
                      <children>
                         <Button fx:id="txt_src_btn" mnemonicParsing="false" onAction="#selectSourceText" text="Text Source" />
-                        <Button fx:id="vid_src_btn" mnemonicParsing="false" text="Video Source" />
+                        <Button fx:id="vid_src_btn" mnemonicParsing="false" onAction="#selectVideoFile" text="Video Source" />
                         <Button fx:id="load_saved_file_btn" mnemonicParsing="false" onAction="#loadSavedFile" text="Load Saved File" />
                         <Button fx:id="play_vid_btn" mnemonicParsing="false" text="Play Video" />
                         <Button fx:id="pause_vid_btn" mnemonicParsing="false" text="Pause Video" />

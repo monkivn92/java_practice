@@ -1,9 +1,13 @@
 package com.vuongpv.submaker;
+import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -25,6 +29,12 @@ public class SubMakerController
 {
     @FXML
     private TextArea textEditor;
+
+    @FXML
+    private Pane videoPane;
+
+    @FXML
+    private Label pendingLabel;
 
     @FXML
     private MediaView mediaView;
@@ -59,10 +69,66 @@ public class SubMakerController
     @FXML
     public void selectSourceText(ActionEvent e)
     {
-        textEditor.setText(selectSingleFile());
+        textEditor.setText(selectSourceText());
     }
 
-    public String selectSingleFile()
+    @FXML
+    public void selectVideoFile(ActionEvent e)
+    {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Video Files", "*.mp4")
+        );
+
+        File file = fileChooser.showOpenDialog(stage);
+
+        if(file != null)
+        {
+            Media m = new Media(file.toURI().toString());
+            MediaPlayer mp = new MediaPlayer(m);
+            mediaView.setMediaPlayer(mp);
+            videoPane.getChildren().remove(pendingLabel);
+        }
+
+    }
+
+    @FXML
+    public void  loadSavedFile()
+    {
+        bgthread = new Service<Void>(){
+            @Override
+            protected Task<Void> createTask()
+            {
+                return new Task<Void>()
+                {
+                    @Override
+                    protected Void call() throws Exception
+                    {
+                        //updateMessage(selectSingleFile());
+                        System.out.println("In Service Task");
+                        parseSaveFile();
+                        return null;
+                    }
+                };
+            }
+        };
+
+        bgthread.setOnSucceeded(new EventHandler<WorkerStateEvent>(){
+            @Override
+            public void handle(WorkerStateEvent event)
+            {
+                System.out.println("Import source text done!");
+                //textEditor.textProperty().unbind();//prevent error-prone
+            }
+        });
+
+        //textEditor.textProperty().bind(bgthread.messageProperty());
+
+        bgthread.restart();
+    }
+
+    public String selectSourceText()
     {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
@@ -93,41 +159,6 @@ public class SubMakerController
 
         return file_content;
 
-    }
-
-    @FXML
-    public void  loadSavedFile()
-    {
-        bgthread = new Service<Void>(){
-            @Override
-            protected Task<Void> createTask()
-            {
-                return new Task<Void>()
-                {
-                    @Override
-                    protected Void call() throws Exception
-                    {
-                        //updateMessage(selectSingleFile());
-                        System.out.println("In Service Task");
-                        parseSaveFile();
-                        return null;
-                    }
-                };
-            }
-        };
-
-        bgthread.setOnSucceeded(new EventHandler<WorkerStateEvent>(){
-            @Override
-            public void handle(WorkerStateEvent event)
-            {
-                System.out.println("Import source text done!");
-                //textEditor.textProperty().unbind();
-            }
-        });
-
-        //textEditor.textProperty().bind(bgthread.messageProperty());
-
-        bgthread.restart();
     }
 
     public void parseSaveFile()
