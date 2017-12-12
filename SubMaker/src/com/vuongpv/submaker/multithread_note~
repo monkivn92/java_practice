@@ -1,0 +1,15 @@
+We have replaced the long sleep with code that executes in a worker thread.
+
+After sleeping for three seconds, the worker thread calls the runLater() method of the
+javafx.application.Platform class, passing it another Runnable  that toggles the rounded corners of
+the rectangle. Because the long-running computation is done in a worker thread,
+the event handler is not blocking the JavaFX application thread.
+
+The change of fill is now reflected immediately in the UI. 
+
+Because the Platform.runLater() call causes the Runnable to
+be executed on the JavaFX application thread,
+the change to the rounded corners is reflected in the UI after three seconds.
+
+The reason we have to execute the
+Runnable on the JavaFX application thread is that it modifies the state of a live scene. 

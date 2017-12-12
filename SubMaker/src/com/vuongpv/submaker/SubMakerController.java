@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -101,6 +102,8 @@ public class SubMakerController
             Media m = new Media(file.toURI().toString());
             mp = new MediaPlayer(m);
             mediaView.setMediaPlayer(mp);
+            mediaView.fitWidthProperty().bind(videoPane.widthProperty());
+            mediaView.fitHeightProperty().bind(videoPane.heightProperty());
             videoPane.getChildren().remove(pendingLabel);
             setUpMediaController();
         }
@@ -264,6 +267,7 @@ public class SubMakerController
         });
 
 
+        //slide event
         progress_bar_vid.valueProperty().addListener(new InvalidationListener() {
             public void invalidated(Observable ov)
             {
@@ -276,10 +280,26 @@ public class SubMakerController
         });
 
 
+
+
     }
 
     protected void updateValues()
     {
+        /*
+        We have replaced the long sleep with code that executes in a worker thread.
+        After sleeping for three seconds, the worker thread calls the runLater() method of the
+        javafx.application.Platform class, passing it another Runnable  that toggles the rounded corners of
+        the rectangle. Because the long-running computation is done in a worker thread,
+        the event handler is not blocking the JavaFX application thread.
+        The change of fill is now reflected immediately in the UI.
+        Because the Platform.runLater() call causes the Runnable to
+        be executed on the JavaFX application thread,
+        the change to the rounded corners is reflected in the UI after three seconds.
+        The reason we have to execute the
+        Runnable on the JavaFX application thread is that it modifies the state of a live scene.
+        */
+
         if (time_line_vid != null && progress_bar_vid != null )
         {
             Platform.runLater(new Runnable() {
@@ -294,7 +314,7 @@ public class SubMakerController
                     if (!progress_bar_vid.isDisabled()  && duration.greaterThan(Duration.ZERO)
                             && !progress_bar_vid.isValueChanging())
                     {
-                        progress_bar_vid.setValue(currentTime.divide(duration).toMillis() * 100.0);
+                        progress_bar_vid.setValue(currentTime.toMillis()/duration.toMillis() * 100.0);
                     }
 
                 }
