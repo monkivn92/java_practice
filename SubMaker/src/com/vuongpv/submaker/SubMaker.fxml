@@ -13,15 +13,16 @@
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.ScrollPane?>
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vuongpv.submaker.SubMakerController">
    <children>
       <HBox prefHeight="600.0" prefWidth="1000.0">
          <children>
-            <TextArea fx:id="textEditor" prefHeight="580.0" prefWidth="336.0" wrapText="true">
-               <font>
-                  <Font name="Arial" size="14.0" />
-               </font>
-            </TextArea>
+            <ScrollPane>
+               <VBox fx:id="textEditor"  prefHeight="580.0" prefWidth="336.0" >
+
+               </VBox>
+            </ScrollPane>
             <VBox prefHeight="580.0" prefWidth="642.0">
                <children>
                   <Pane fx:id="videoPane" maxWidth="-Infinity" prefHeight="360.0" prefWidth="640.0" style="-fx-background-color: #013243;">

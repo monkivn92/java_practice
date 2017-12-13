@@ -5,12 +5,11 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -23,18 +22,21 @@ import javafx.event.ActionEvent;
 import java.io.File;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javafx.util.Duration;
 import java.util.List;
+import java.util.StringTokenizer;
+
 import javafx.concurrent.*;
 
 public class SubMakerController
 {
     @FXML
-    private TextArea textEditor;
+    private VBox textEditor;
 
     @FXML
     private Pane videoPane;
@@ -75,6 +77,8 @@ public class SubMakerController
     private Duration duration;
     private boolean stopRequested = false;
 
+    private ContextMenu contextMenu;
+
     public void setStage(Stage stage)
     {
         this.stage = stage;
@@ -83,7 +87,47 @@ public class SubMakerController
     @FXML
     public void selectSourceText(ActionEvent e)
     {
-        textEditor.setText(selectSourceText());
+        String txt = selectSourceText();
+
+        //A Task Which Modifies The Scene Graph
+        Task<Void> task = new Task<Void>() {
+            @Override protected Void call() throws Exception {
+
+                //if (isCancelled()) break;
+
+                StringTokenizer strtok  =new StringTokenizer(txt,".");
+
+                if(strtok.countTokens() > 0)
+                {
+                    createContextMenu();
+                    while (strtok.hasMoreTokens())
+                    {
+                        CustomTextField ctf = new CustomTextField(strtok.nextToken());
+                        ctf.setContextMenu(contextMenu);
+                        ctf.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+
+                            @Override
+                            public void handle(ContextMenuEvent event) {
+
+                                contextMenu.show(ctf, event.getScreenX(), event.getScreenY());
+                            }
+                        });
+
+                        Platform.runLater(new Runnable() {
+                            @Override public void run() {
+                                textEditor.getChildren().add(ctf);
+                            }
+                        });
+                    }
+                }
+
+
+
+                return null;
+            }
+        };
+
+        new Thread(task).start();
     }
 
     @FXML
@@ -159,7 +203,7 @@ public class SubMakerController
         if(file != null)
         {
             Path fp = Paths.get(file.getAbsolutePath());
-            Charset charset = Charset.forName("UTF-16");
+            Charset charset = Charset.forName("UTF-8");
             try
             {
                 List<String> fcontent = Files.readAllLines(fp, charset);
@@ -181,8 +225,8 @@ public class SubMakerController
     public void parseSaveFile()
     {
 
-        String txt = textEditor.getText().replace("svn", "SVN");
-        textEditor.setText(txt);
+        //String txt = textEditor.getText().replace("svn", "SVN");
+        //textEditor.setText(txt);
     }
 
     public void setUpMediaController()
@@ -371,6 +415,68 @@ public class SubMakerController
         }
     }
 
+    public void createContextMenu()
+    {
+        if(contextMenu == null)
+        {
+            contextMenu = new ContextMenu();
+            MenuItem item1 = new MenuItem("Edit");
+
+
+            MenuItem item2 = new MenuItem("Remove");
+
+            contextMenu.getItems().addAll(item1, item2);
+
+        }
+
+    }
+
+    public void handleContextMenuEvent(ActionEvent event)
+    {
+        System.out.println(event.getTarget());//menuitem
+        System.out.println(event.getSource().toString());//menuitem
+    }
+
+
+}
+
+
+class CustomTextField extends TextArea implements Serializable
+{
+    private long start_time;
+    private long end_time;
+
+    public long getStartTime()
+    {
+        return start_time;
+    }
+
+    public void setStartTime(long start_time)
+    {
+        this.start_time = start_time;
+
+    }
+
+    public long getEndTime()
+    {
+        return end_time;
+    }
+
+    public void setEndTime(long end_time)
+    {
+        this.end_time = end_time;
+    }
+
+
+    CustomTextField()
+    {
+        super();
+    }
+
+    CustomTextField(String txt)
+    {
+        super(txt);
+    }
 
 
 }
