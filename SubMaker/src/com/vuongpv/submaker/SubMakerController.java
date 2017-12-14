@@ -79,6 +79,8 @@ public class SubMakerController
 
     private ContextMenu contextMenu;
 
+    private CustomTextField selectedTxTF;
+
     public void setStage(Stage stage)
     {
         this.stage = stage;
@@ -111,6 +113,10 @@ public class SubMakerController
 
                                 contextMenu.show(ctf, event.getScreenX(), event.getScreenY());
                             }
+                        });
+
+                        ctf.setOnMouseClicked((MouseEvent me)->{
+                            selectedTxTF = (CustomTextField) me.getSource();
                         });
 
                         Platform.runLater(new Runnable() {
@@ -421,9 +427,14 @@ public class SubMakerController
         {
             contextMenu = new ContextMenu();
             MenuItem item1 = new MenuItem("Edit");
-
+            item1.setOnAction((ActionEvent e)->{
+                handleContextMenuEvent("edit");
+            });
 
             MenuItem item2 = new MenuItem("Remove");
+            item2.setOnAction((ActionEvent e)->{
+                handleContextMenuEvent("remove");
+            });
 
             contextMenu.getItems().addAll(item1, item2);
 
@@ -431,10 +442,16 @@ public class SubMakerController
 
     }
 
-    public void handleContextMenuEvent(ActionEvent event)
+    public void handleContextMenuEvent(String task)
     {
-        System.out.println(event.getTarget());//menuitem
-        System.out.println(event.getSource().toString());//menuitem
+
+        System.out.println(task);
+
+        if(selectedTxTF != null)
+        {
+            selectedTxTF.clear();
+        }
+
     }
 
 
