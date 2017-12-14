@@ -73,41 +73,43 @@
       <file leaf-file-name="SubMakerController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/vuongpv/submaker/SubMakerController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="265">
-              <caret line="451" column="33" lean-forward="true" selection-start-line="451" selection-start-column="33" selection-end-line="451" selection-end-column="33" />
+            <state relative-caret-position="362">
+              <caret line="469" column="41" lean-forward="true" selection-start-line="469" selection-start-column="41" selection-end-line="469" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1744#1745#0" expanded="true" />
-                <element signature="e#1778#1779#0" expanded="true" />
-                <element signature="e#1961#3350#0" expanded="true" />
-                <element signature="e#3128#3129#0" expanded="true" />
-                <element signature="e#3225#3226#0" expanded="true" />
-                <element signature="e#3349#3350#0" expanded="true" />
+                <element signature="e#2043#2044#0" expanded="true" />
+                <element signature="e#2077#2078#0" expanded="true" />
+                <element signature="method#selectSourceText#0;class#SubMakerController#0" expanded="false" />
+                <element signature="e#2260#3649#0" expanded="true" />
+                <element signature="e#3427#3428#0" expanded="true" />
+                <element signature="e#3524#3525#0" expanded="true" />
+                <element signature="e#3648#3649#0" expanded="true" />
                 <element signature="method#selectVideoFile#0;class#SubMakerController#0" expanded="false" />
                 <element signature="method#loadSavedFile#0;class#SubMakerController#0" expanded="false" />
-                <element signature="e#4251#4789#0" expanded="true" />
-                <element signature="e#4377#4764#0" expanded="true" />
-                <element signature="e#4763#4764#0" expanded="true" />
-                <element signature="e#4788#4789#0" expanded="true" />
+                <element signature="e#4550#5088#0" expanded="true" />
+                <element signature="e#4676#5063#0" expanded="true" />
+                <element signature="e#5062#5063#0" expanded="true" />
+                <element signature="e#5087#5088#0" expanded="true" />
                 <element signature="method#selectSourceText#1;class#SubMakerController#0" expanded="false" />
                 <element signature="method#parseSaveFile#0;class#SubMakerController#0" expanded="false" />
                 <element signature="method#setUpMediaController#0;class#SubMakerController#0" expanded="false" />
-                <element signature="class#6370:7305" expanded="false" />
-                <element signature="e#7456#7457#0" expanded="true" />
-                <element signature="e#7502#7503#0" expanded="true" />
+                <element signature="class#6669:7604" expanded="false" />
+                <element signature="e#7755#7756#0" expanded="true" />
+                <element signature="e#7801#7802#0" expanded="true" />
                 <element signature="method#updateValues#0;class#SubMakerController#0" expanded="false" />
                 <element signature="method#formatTime#0;class#SubMakerController#0" expanded="false" />
+                <element signature="method#createContextMenu#0;class#SubMakerController#0" expanded="false" />
                 <element signature="class#CustomTextField#0" expanded="false" />
-                <element signature="e#13247#13248#0" expanded="true" />
-                <element signature="e#13280#13281#0" expanded="true" />
-                <element signature="e#13414#13415#0" expanded="true" />
-                <element signature="e#13445#13446#0" expanded="true" />
-                <element signature="e#13494#13495#0" expanded="true" />
-                <element signature="e#13534#13535#0" expanded="true" />
-                <element signature="e#13564#13565#0" expanded="true" />
-                <element signature="e#13587#13588#0" expanded="true" />
-                <element signature="e#13626#13627#0" expanded="true" />
-                <element signature="e#13652#13653#0" expanded="true" />
+                <element signature="e#15224#15225#0" expanded="true" />
+                <element signature="e#15257#15258#0" expanded="true" />
+                <element signature="e#15391#15392#0" expanded="true" />
+                <element signature="e#15422#15423#0" expanded="true" />
+                <element signature="e#15471#15472#0" expanded="true" />
+                <element signature="e#15511#15512#0" expanded="true" />
+                <element signature="e#15541#15542#0" expanded="true" />
+                <element signature="e#15564#15565#0" expanded="true" />
+                <element signature="e#15603#15604#0" expanded="true" />
+                <element signature="e#15629#15630#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -777,7 +779,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32917318" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31513262" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31513262" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -857,41 +859,43 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/vuongpv/submaker/SubMakerController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="451" column="33" lean-forward="true" selection-start-line="451" selection-start-column="33" selection-end-line="451" selection-end-column="33" />
+        <state relative-caret-position="362">
+          <caret line="469" column="41" lean-forward="true" selection-start-line="469" selection-start-column="41" selection-end-line="469" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1744#1745#0" expanded="true" />
-            <element signature="e#1778#1779#0" expanded="true" />
-            <element signature="e#1961#3350#0" expanded="true" />
-            <element signature="e#3128#3129#0" expanded="true" />
-            <element signature="e#3225#3226#0" expanded="true" />
-            <element signature="e#3349#3350#0" expanded="true" />
+            <element signature="e#2043#2044#0" expanded="true" />
+            <element signature="e#2077#2078#0" expanded="true" />
+            <element signature="method#selectSourceText#0;class#SubMakerController#0" expanded="false" />
+            <element signature="e#2260#3649#0" expanded="true" />
+            <element signature="e#3427#3428#0" expanded="true" />
+            <element signature="e#3524#3525#0" expanded="true" />
+            <element signature="e#3648#3649#0" expanded="true" />
             <element signature="method#selectVideoFile#0;class#SubMakerController#0" expanded="false" />
             <element signature="method#loadSavedFile#0;class#SubMakerController#0" expanded="false" />
-            <element signature="e#4251#4789#0" expanded="true" />
-            <element signature="e#4377#4764#0" expanded="true" />
-            <element signature="e#4763#4764#0" expanded="true" />
-            <element signature="e#4788#4789#0" expanded="true" />
+            <element signature="e#4550#5088#0" expanded="true" />
+            <element signature="e#4676#5063#0" expanded="true" />
+            <element signature="e#5062#5063#0" expanded="true" />
+            <element signature="e#5087#5088#0" expanded="true" />
             <element signature="method#selectSourceText#1;class#SubMakerController#0" expanded="false" />
             <element signature="method#parseSaveFile#0;class#SubMakerController#0" expanded="false" />
             <element signature="method#setUpMediaController#0;class#SubMakerController#0" expanded="false" />
-            <element signature="class#6370:7305" expanded="false" />
-            <element signature="e#7456#7457#0" expanded="true" />
-            <element signature="e#7502#7503#0" expanded="true" />
+            <element signature="class#6669:7604" expanded="false" />
+            <element signature="e#7755#7756#0" expanded="true" />
+            <element signature="e#7801#7802#0" expanded="true" />
             <element signature="method#updateValues#0;class#SubMakerController#0" expanded="false" />
             <element signature="method#formatTime#0;class#SubMakerController#0" expanded="false" />
+            <element signature="method#createContextMenu#0;class#SubMakerController#0" expanded="false" />
             <element signature="class#CustomTextField#0" expanded="false" />
-            <element signature="e#13247#13248#0" expanded="true" />
-            <element signature="e#13280#13281#0" expanded="true" />
-            <element signature="e#13414#13415#0" expanded="true" />
-            <element signature="e#13445#13446#0" expanded="true" />
-            <element signature="e#13494#13495#0" expanded="true" />
-            <element signature="e#13534#13535#0" expanded="true" />
-            <element signature="e#13564#13565#0" expanded="true" />
-            <element signature="e#13587#13588#0" expanded="true" />
-            <element signature="e#13626#13627#0" expanded="true" />
-            <element signature="e#13652#13653#0" expanded="true" />
+            <element signature="e#15224#15225#0" expanded="true" />
+            <element signature="e#15257#15258#0" expanded="true" />
+            <element signature="e#15391#15392#0" expanded="true" />
+            <element signature="e#15422#15423#0" expanded="true" />
+            <element signature="e#15471#15472#0" expanded="true" />
+            <element signature="e#15511#15512#0" expanded="true" />
+            <element signature="e#15541#15542#0" expanded="true" />
+            <element signature="e#15564#15565#0" expanded="true" />
+            <element signature="e#15603#15604#0" expanded="true" />
+            <element signature="e#15629#15630#0" expanded="true" />
           </folding>
         </state>
       </provider>

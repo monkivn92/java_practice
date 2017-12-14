@@ -5,15 +5,18 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import javafx.event.ActionEvent;
@@ -80,6 +83,13 @@ public class SubMakerController
     private ContextMenu contextMenu;
 
     private CustomTextField selectedTxTF;
+
+    private Stage  modalStage;
+    private VBox modalVbox;
+    private HBox modalHbox1;
+    private  HBox modalHbox2;
+    private Label modalLabel1, modalLabel2;
+    private TextField modalTxtF1, modalTxtF2;
 
     public void setStage(Stage stage)
     {
@@ -445,11 +455,54 @@ public class SubMakerController
     public void handleContextMenuEvent(String task)
     {
 
-        System.out.println(task);
-
-        if(selectedTxTF != null)
+        if("remove".equalsIgnoreCase(task))
         {
-            selectedTxTF.clear();
+            if(selectedTxTF != null)
+            {
+                textEditor.getChildren().remove(selectedTxTF);
+            }
+        }
+
+        if("edit".equalsIgnoreCase(task) && selectedTxTF != null)
+        {
+            if(modalStage == null)
+            {
+                modalStage = new Stage();
+                modalStage.initModality(Modality.APPLICATION_MODAL);
+                modalStage.initOwner(stage);
+
+                modalLabel1 = new Label("Start Time:");
+                modalLabel2 = new Label("End Time:");
+
+                modalTxtF1 = new TextField();
+                modalTxtF1.setText(String.valueOf(selectedTxTF.getStartTime()));
+
+                modalTxtF2 = new TextField();
+                modalTxtF2.setText(String.valueOf(selectedTxTF.getEndTime()));
+
+                modalHbox1 = new HBox(modalLabel1, modalTxtF1);
+                modalHbox2 = new HBox(modalLabel2, modalTxtF2);
+
+                Button updateBtn = new Button("Update");
+                updateBtn.setOnAction((ActionEvent e)->{
+                    selectedTxTF.setStartTime(Long.parseLong(modalTxtF1.getText()));
+                    selectedTxTF.setEndTime(Long.parseLong(modalTxtF2.getText()));
+                    modalStage.hide();
+                });
+
+                modalVbox = new VBox(modalHbox1, modalHbox2,updateBtn);
+                Scene modalScene = new Scene(modalVbox, 300, 200);
+
+                modalStage.setScene(modalScene);
+                modalStage.show();
+
+            }
+            else
+            {
+                modalTxtF2.setText(String.valueOf(selectedTxTF.getEndTime()));
+                modalTxtF1.setText(String.valueOf(selectedTxTF.getStartTime()));
+                modalStage.show();
+            }
         }
 
     }
