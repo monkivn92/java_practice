@@ -206,7 +206,7 @@ public class SubMakerController
 
                                 ProjectDataObject target = (ProjectDataObject) oi.readObject();
                                 System.out.println(target.getVidPath());
-                                System.out.println(target.getTxtdata());
+                                System.out.println(target.getTxtdata().get(3).getTxtData());
                             }
                             catch (IOException e)
                             {
@@ -620,6 +620,7 @@ class CustomTextField extends TextArea implements Serializable
 {
     private long start_time;
     private long end_time;
+    private String txtdata;
     private static final long serialVersionUID = 1868L;
 
     public long getStartTime()
@@ -643,6 +644,11 @@ class CustomTextField extends TextArea implements Serializable
         this.end_time = end_time;
     }
 
+    public String getTxtData()
+    {
+        return this.txtdata;
+    }
+
 
     CustomTextField()
     {
@@ -652,6 +658,7 @@ class CustomTextField extends TextArea implements Serializable
     CustomTextField(String txt)
     {
         super(txt);
+        this.txtdata = txt;
     }
 
 
