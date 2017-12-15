@@ -3,6 +3,7 @@ package com.vuongpv.submaker;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -22,15 +24,15 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
 
-import java.io.File;
+import java.io.*;
 
-import java.io.IOException;
-import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javafx.util.Duration;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -81,7 +83,7 @@ public class SubMakerController
 
     private Service<Void> bgthread;
     private MediaPlayer mp;
-
+    private String video_path;
     private boolean atEndOfMedia = false;
     private Duration duration;
     private boolean stopRequested = false;
@@ -165,6 +167,7 @@ public class SubMakerController
 
         if(file != null)
         {
+            video_path = file.getAbsolutePath();
             Media m = new Media(file.toURI().toString());
             mp = new MediaPlayer(m);
             mediaView.setMediaPlayer(mp);
@@ -179,36 +182,52 @@ public class SubMakerController
     @FXML
     public void  loadSavedFile()
     {
-        bgthread = new Service<Void>(){
-            @Override
-            protected Task<Void> createTask()
-            {
-                return new Task<Void>()
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File");
+
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        String targetPath = selectedFile.getAbsolutePath();
+
+        if(targetPath != null && targetPath.indexOf(".data") != -1)
+        {
+            Task<Void> task = new Task<Void>() {
+
+                @Override protected Void call() throws Exception
                 {
-                    @Override
-                    protected Void call() throws Exception
-                    {
-                        //updateMessage(selectSingleFile());
-                        System.out.println("In Service Task");
-                        parseSaveFile();
-                        return null;
-                    }
-                };
-            }
-        };
 
-        bgthread.setOnSucceeded(new EventHandler<WorkerStateEvent>(){
-            @Override
-            public void handle(WorkerStateEvent event)
-            {
-                System.out.println("Import source text done!");
-                //textEditor.textProperty().unbind();//prevent error-prone
-            }
-        });
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run()
+                        {
+                            try
+                            {
+                                FileInputStream fi = new FileInputStream(new File(targetPath));
+                                ObjectInputStream oi = new ObjectInputStream(fi);
 
-        //textEditor.textProperty().bind(bgthread.messageProperty());
+                                ProjectDataObject target = (ProjectDataObject) oi.readObject();
+                                System.out.println(target.getVidPath());
+                                System.out.println(target.getTxtdata());
+                            }
+                            catch (IOException e)
+                            {
+                                e.printStackTrace();
+                            }
+                            catch (ClassNotFoundException e)
+                            {
+                                e.printStackTrace();
+                            }
 
-        bgthread.restart();
+                        }
+                    });
+
+                    return null;
+                }
+            };
+
+            new Thread(task).start();
+
+        }
+
     }
 
     @FXML
@@ -230,6 +249,65 @@ public class SubMakerController
             play_vid_btn.fire();
             selectedTxTF.setEndTime((long) mp.getCurrentTime().toMillis());
         }
+    }
+
+    @FXML
+    public void saveProject()
+    {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File");
+
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        String savePath = selectedFile.getAbsolutePath();
+
+        if(savePath != null && savePath.indexOf(".data") != -1)
+        {
+            saveFileToDisk(savePath);
+        }
+    }
+
+    public void saveFileToDisk(String spath)
+    {
+        //A Task Which Modifies The Scene Graph
+        Task<Void> task = new Task<Void>() {
+
+            @Override protected Void call() throws Exception
+            {
+
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run()
+                    {
+                        ProjectDataObject sobj = new ProjectDataObject();
+                        sobj.setVidPath(video_path);
+                        sobj.parseTxtdata(textEditor.getChildren());
+
+                        try
+                        {
+                            // write object to file
+                            OutputStream fos = Files.newOutputStream(Paths.get(spath));
+                            ObjectOutputStream oos = new ObjectOutputStream(fos);
+                            oos.writeObject(sobj);
+                            oos.close();
+
+                        }
+                        catch (FileNotFoundException e)
+                        {
+                            e.printStackTrace();
+                        }
+                        catch (IOException e)
+                        {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+
+                return null;
+            }
+        };
+
+        new Thread(task).start();
     }
 
     public String selectSourceText()
@@ -542,6 +620,7 @@ class CustomTextField extends TextArea implements Serializable
 {
     private long start_time;
     private long end_time;
+    private static final long serialVersionUID = 1868L;
 
     public long getStartTime()
     {
@@ -573,6 +652,43 @@ class CustomTextField extends TextArea implements Serializable
     CustomTextField(String txt)
     {
         super(txt);
+    }
+
+
+}
+
+class ProjectDataObject implements  Serializable
+{
+    private String video_path;
+
+    private List<CustomTextField> txtdata = new ArrayList<>();
+    private static final long serialVersionUID = 1888968L;
+
+    public void setVidPath(String vp)
+    {
+        this.video_path = vp;
+    }
+
+    public String getVidPath()
+    {
+        return this.video_path;
+    }
+
+    public List<CustomTextField> getTxtdata()
+    {
+        return txtdata;
+    }
+
+    public void parseTxtdata(ObservableList ovb)
+    {
+        int ovb_size = ovb.size();
+        System.out.println(ovb_size);
+        if(ovb_size > 0)
+        {
+            ovb.forEach((item)->{
+                txtdata.add((CustomTextField) item);
+            });
+        }
     }
 
 

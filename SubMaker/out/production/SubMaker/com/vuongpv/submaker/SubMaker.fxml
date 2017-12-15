@@ -67,7 +67,7 @@
 
                          <Button fx:id="start_time_btn" mnemonicParsing="false" text="&gt;|" onAction="#handleSetStartTime"  />
                          <Button fx:id="end_time_btn" mnemonicParsing="false" text="|&lt;" onAction="#handleSetEndTime"  />
-                         <Button fx:id="save_proj_btn" mnemonicParsing="false" text="Save Project" />
+                         <Button fx:id="save_proj_btn" mnemonicParsing="false" text="Save Project" onAction="#saveProject" />
 
                      </children>
                      <padding>
