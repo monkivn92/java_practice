@@ -47,6 +47,7 @@
                      </padding>
                      <left>
                         <Button fx:id="play_vid_btn" mnemonicParsing="false" text="&gt;" BorderPane.alignment="CENTER" />
+
                      </left>
                      <center>
                         <Slider fx:id="progress_bar_vid" maxWidth="350.0" prefHeight="16.0" prefWidth="350.0" BorderPane.alignment="CENTER" />
@@ -63,7 +64,11 @@
                         <Button fx:id="txt_src_btn" mnemonicParsing="false" onAction="#selectSourceText" text="Text Source" />
                         <Button fx:id="vid_src_btn" mnemonicParsing="false" onAction="#selectVideoFile" text="Video Source" />
                         <Button fx:id="load_saved_file_btn" mnemonicParsing="false" onAction="#loadSavedFile" text="Load Saved File" />
-                        <Button fx:id="save_proj_btn" mnemonicParsing="false" text="Save Project" />
+
+                         <Button fx:id="start_time_btn" mnemonicParsing="false" text="&gt;|" onAction="#handleSetStartTime"  />
+                         <Button fx:id="end_time_btn" mnemonicParsing="false" text="|&lt;" onAction="#handleSetEndTime"  />
+                         <Button fx:id="save_proj_btn" mnemonicParsing="false" text="Save Project" />
+
                      </children>
                      <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

@@ -66,6 +66,12 @@ public class SubMakerController
     private Button play_vid_btn;
 
     @FXML
+    private Button star_time_btn;
+
+    @FXML
+    private Button end_time_btn;
+
+    @FXML
     private Slider progress_bar_vid;
 
     @FXML
@@ -203,6 +209,27 @@ public class SubMakerController
         //textEditor.textProperty().bind(bgthread.messageProperty());
 
         bgthread.restart();
+    }
+
+    @FXML
+    public void handleSetStartTime()
+    {
+        if(selectedTxTF != null && mp != null)
+        {
+            play_vid_btn.fire();
+            selectedTxTF.setStartTime((long) mp.getCurrentTime().toMillis());
+
+        }
+    }
+
+    @FXML
+    public void handleSetEndTime()
+    {
+        if(selectedTxTF != null && mp != null)
+        {
+            play_vid_btn.fire();
+            selectedTxTF.setEndTime((long) mp.getCurrentTime().toMillis());
+        }
     }
 
     public String selectSourceText()
