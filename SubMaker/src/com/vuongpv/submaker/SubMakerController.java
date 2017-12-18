@@ -107,8 +107,8 @@ public class SubMakerController
     @FXML
     public void selectSourceText(ActionEvent e)
     {
-        String txt = selectSourceText();
-
+        String txt = selectSourceTextss();
+        textEditor.getChildren().clear();
         //A Task Which Modifies The Scene Graph
         Task<Void> task = new Task<Void>() {
             @Override protected Void call() throws Exception {
@@ -119,6 +119,7 @@ public class SubMakerController
 
                 if(strtok.countTokens() > 0)
                 {
+
                     createContextMenu();
                     while (strtok.hasMoreTokens())
                     {
@@ -167,14 +168,8 @@ public class SubMakerController
 
         if(file != null)
         {
-            video_path = file.getAbsolutePath();
-            Media m = new Media(file.toURI().toString());
-            mp = new MediaPlayer(m);
-            mediaView.setMediaPlayer(mp);
-            mediaView.fitWidthProperty().bind(videoPane.widthProperty());
-            mediaView.fitHeightProperty().bind(videoPane.heightProperty());
-            videoPane.getChildren().remove(pendingLabel);
-            setUpMediaController();
+            video_path = file.toURI().toString();
+            setUpMediaController(video_path);
         }
 
     }
@@ -190,6 +185,8 @@ public class SubMakerController
 
         if(targetPath != null && targetPath.indexOf(".data") != -1)
         {
+            textEditor.getChildren().clear();
+
             Task<Void> task = new Task<Void>() {
 
                 @Override protected Void call() throws Exception
@@ -205,8 +202,22 @@ public class SubMakerController
                                 ObjectInputStream oi = new ObjectInputStream(fi);
 
                                 ProjectDataObject target = (ProjectDataObject) oi.readObject();
-                                System.out.println(target.getVidPath());
-                                System.out.println(target.getTxtdata().get(3).getTxtData());
+
+                                setUpMediaController(target.getVidPath());
+
+                                if(contextMenu == null)
+                                {
+                                    createContextMenu();
+                                }
+
+                                target.getTxtdata().forEach((CustomTextField ctf)->{
+                                    ctf.setText(ctf.getTxtData());
+                                    ctf.setContextMenu(contextMenu);
+                                    ctf.setOnMouseClicked((MouseEvent me)->{
+                                        selectedTxTF = (CustomTextField) me.getSource();
+                                    });
+                                    textEditor.getChildren().add(ctf);
+                                });
                             }
                             catch (IOException e)
                             {
@@ -310,7 +321,7 @@ public class SubMakerController
         new Thread(task).start();
     }
 
-    public String selectSourceText()
+    public String selectSourceTextss()
     {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
@@ -343,15 +354,18 @@ public class SubMakerController
 
     }
 
-    public void parseSaveFile()
+
+
+    public void setUpMediaController(String video_path)
     {
 
-        //String txt = textEditor.getText().replace("svn", "SVN");
-        //textEditor.setText(txt);
-    }
+        Media m = new Media(video_path);
+        mp = new MediaPlayer(m);
+        mediaView.setMediaPlayer(mp);
+        mediaView.fitWidthProperty().bind(videoPane.widthProperty());
+        mediaView.fitHeightProperty().bind(videoPane.heightProperty());
+        videoPane.getChildren().remove(pendingLabel);
 
-    public void setUpMediaController()
-    {
         play_vid_btn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e)
             {

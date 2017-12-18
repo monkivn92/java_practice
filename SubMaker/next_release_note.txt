@@ -1,0 +1,7 @@
+1. Fix bug when open file dialog and select cancel or close windows without seleting a file
+
+2. Split function
+
+3. Optimize multi-thread
+
+4. Message noti
