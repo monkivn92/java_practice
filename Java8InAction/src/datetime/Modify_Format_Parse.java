@@ -3,6 +3,7 @@ package datetime;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
@@ -147,7 +148,21 @@ public class Modify_Format_Parse
                 + f5
         );
 
-        //-----> Next lession : page 357, Listing 12.12. Building a DateTimeFormatter
+        //12.12. Building a DateTimeFormatter
+        DateTimeFormatter italyFormatter = new DateTimeFormatterBuilder()
+                                                .appendText(ChronoField.DAY_OF_MONTH)
+                                                .appendLiteral(". ")
+                                                .appendText(ChronoField.MONTH_OF_YEAR)
+                                                .appendLiteral(" ")
+                                                .appendText(ChronoField.YEAR)
+                                                .parseCaseInsensitive()
+                                                .toFormatter(Locale.ITALIAN);
+        String f6 = date1.format(italyFormatter);
+
+        System.out.println(this_thread.getStackTrace()[1].getLineNumber()
+                + ":f6 italy "
+                + f6
+        );
 
     }
 
