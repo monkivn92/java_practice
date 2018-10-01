@@ -183,7 +183,7 @@ public class Chap5
         Stream.iterate(0, n -> n + 2)
                 .limit(10)
                 .forEach(System.out::println);
-        
+
         System.out.println("Stream generate random number");
         Stream.generate(Math::random)
                 .limit(5)
